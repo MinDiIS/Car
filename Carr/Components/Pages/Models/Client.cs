@@ -3,13 +3,11 @@
 
 public class Client
 {
-    public string Name { get; set; }          // Имя клиента
-    public string Description { get; set; }   // Описание проблемы
-    public DateTime AppointmentDate { get; set; } // Дата назначения
-    
-    public TimeOnly AppointmentTime { get; set; } = new TimeOnly(10, 0); // Время 
-    public int Id { get; set; }               // Уникальный идентификатор
-    public int ServiceId { get; set; }  // Связь с услугой
+    public string Name { get; set; }          
+    public string Description { get; set; }   
+    public DateTime AppointmentDate { get; set; } = DateTime.Now;
+    public TimeOnly AppointmentTime { get; set; } = new TimeOnly(10, 0); 
+    public int Id { get; set; }              
+    public int ServiceId { get; set; }  
 
-    
 }
