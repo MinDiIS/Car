@@ -1,0 +1,46 @@
+﻿@page "/Services"
+@using Carr.Services
+@using Carr
+@inject RepairSE RepairSe
+@inject NavigationManager NavigationManager
+@rendermode InteractiveServer
+
+<h3>Запись на Услуги</h3>
+
+<!-- Форма добавления услуги -->
+<div class="add-service-form">
+    <input placeholder="Название услуги" @bind="RepairSe.NewService.Title"/>
+    <textarea placeholder="Подробное описание услуги" @bind="RepairSe.NewService.Description"></textarea>
+    <input type="number" placeholder="Стоимость (руб)" @bind="RepairSe.NewService.Cost"/>
+    <button @onclick="RepairSe.AddService">Добавить услугу</button>
+</div>
+
+<!-- Список услуг -->
+<div class="services-list">
+    @foreach (var service in RepairSe.ServicesPage)
+    {
+        <div class="service-card">
+            <img src="https://a.d-cd.net/8fbc8e1s-1920.jpg" alt="Автосервис"/>
+            <div class="service-card-content">
+                <h4>@service.Title</h4>
+                <p>@service.Description</p>
+                @if(service.Cost.HasValue)
+                {
+                    <p class="cost">Цена: @service.Cost.Value.ToString("N0") ₽</p>
+                }
+                else
+                {
+                    <p class="cost">Цена: не указана</p>
+                }
+                <div class="service-card-actions">
+                    <button @onclick="@(() => NavigationManager.NavigateTo("/Client"))">Записаться</button>
+                    <button @onclick="() => RepairSe.RemoveService(service)">Удалить</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+
+}
