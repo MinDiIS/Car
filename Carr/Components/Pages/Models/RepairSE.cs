@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Carr.Services
 {
-    public class RepairSe
+    public class RepairSE
     {
         public IList<Repair> ServicesPage { get; private set; } = new List<Repair>();
         public Repair NewService { get; set; } = new Repair();

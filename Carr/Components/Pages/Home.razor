@@ -1,7 +1,69 @@
 ﻿@page "/"
+@using Carr.Services
+@using Carr
+@using Newtonsoft.Json
+@rendermode InteractiveServer
+@inject RepairCl RepairCl
+@inject RepairSE RepairSe
 
-<PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="Client-input">
+    <input class="client-name" type="text" @bind="RepairCl.NewClient.Name" placeholder="Ваше имя" />
+    <textarea class="client-text" @bind="RepairCl.NewClient.Description" placeholder="Опишите проблему с вашим автомобилем"></textarea>
 
-Welcome to your new app.
+    <label class="client-label">Выберите услугу:</label>
+    <select @bind="RepairCl.NewClient.ServiceId" class="client-select">
+        <option value="">-- Выберите услугу --</option>
+        @foreach (var service in RepairSe.ServicesPage)
+        {
+            <option value="@service.Id">@service.ServiceName</option>
+        }
+    </select>
+
+    <h3 class="Date-h3">Выберите дату и время:</h3>
+    <div>
+        <input type="date" @bind="RepairCl.NewClient.AppointmentDate" />
+        <input type="time" @bind="RepairCl.NewClient.AppointmentTime" min="10:00" max="20:00" />
+    </div>
+
+    <button @onclick="RepairCl.AddClient" class="sub-btn">Записаться на обслуживание</button>
+</div>
+
+<table class="reviews-table">
+    @if (RepairCl.ClientPage.Count == 0)
+    {
+        <tr><td>Нет активных записей</td></tr>
+    }
+    else
+    {
+        @foreach (var client in RepairCl.ClientPage)
+        {
+            var selectedService = RepairSe.ServicesPage.FirstOrDefault(s => s.Id == client.ServiceId);
+
+            <tr class="reviews-table-tr">
+                <td>
+                    <div class="reviews-head">
+                        <img src="https://i.pinimg.com/originals/91/90/22/9190225c4286a9706fa3bc1dd8492351.jpg" class="reviews-avatar" />
+                        <p class="reviews-name">@client.Name</p>
+                    </div>
+                    <p class="Client-title">
+                        <strong>Услуга:</strong> @(selectedService?.ServiceName ?? "Не указана") |
+                        <strong>Описание:</strong> @client.Description |
+                        <strong>Дата:</strong> @client.AppointmentDate.ToString("yyyy-MM-dd") |
+                        <strong>Время:</strong> @client.AppointmentTime
+                    </p>
+                </td>
+                <td>
+                    <button @onclick="() => RepairCl.RemoveClient(client)" class="btn-record">Отменить запись</button>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+@code {
+    protected override void OnInitialized()
+    {
+        RepairCl.OpenFile();
+    }
+}

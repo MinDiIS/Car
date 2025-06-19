@@ -1,4 +1,5 @@
 using Carr.Components;
+using Carr.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddScoped<RepairCl>();
+builder.Services.AddScoped<RepairSE>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
